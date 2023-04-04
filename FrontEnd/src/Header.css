@@ -1,0 +1,18 @@
+.nav-header {
+  position: flex;
+/*rgb(0,47,167)*/
+
+  display:flex;
+  background:black;
+}
+
+.nav-header h1{
+  color:rgb(0,47,167);
+  padding-left:20px;
+  font: 1px;
+} 
+.link{
+  padding-left:70px;
+  color: white;
+  text-decoration: none
+}
