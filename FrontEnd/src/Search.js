@@ -13,24 +13,21 @@ function Search(){
     setIngredient(value);
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    
-    
-    // Perform form submission logic with ingredient
-    
-    setIngredient('Loading...');
-    
+
+    try {
+      const response = await axios.post('/search', {'name': ingredient});
+      console.log('Response:', response.data);
+      // Handle response, update UI, etc.
+    } catch (error) {
+      console.error('Error:', error.message);
+      // Handle error, show error message, etc.
+    }
+
+    setIngredient('');
   }
-  axios.post('/search', ingredient)
-  .then(response => {
-    console.log('Response:', response.data);
-    // Handle response, update UI, etc.
-  })
-  .catch(error => {
-    console.error('Error:', error.message);
-    // Handle error, show error message, etc.
-  });
+
 
   return(
     <div>

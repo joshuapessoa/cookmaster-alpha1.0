@@ -25,8 +25,10 @@ function Mystery(){
 
       {recipe.map((rec) => (
           <div class="ingredients">
+            {console.log('whats going on', rec.image) }
           {console.log(rec.instructions[0].text)}
           <h3>{rec.title}</h3>
+          <img src={rec.image} className="m-image" alt="food image"></img>
           {rec.ingredients.map((r) => 
 
             <p>{r}</p>

@@ -25,7 +25,7 @@ app.get('/firebase', (req, res) => {
       method: 'GET',
       url: 'https://random-recipes.p.rapidapi.com/ai-quotes/5',
       headers: {
-        'X-RapidAPI-Key': '43a538bf98msh845702fed47406cp111041jsn999253279440',
+        'X-RapidAPI-Key': process.env.REACT_APP_API_KEY_Random,
         'X-RapidAPI-Host': 'random-recipes.p.rapidapi.com'
       }
     };
@@ -48,17 +48,24 @@ app.get('/firebase', (req, res) => {
 
   app.post('/search', (req, res) => {
     // Retrieve data from request body
-    const keyword = req.ingredient;
-  
-    // Validate and sanitize data (e.g., check for required fields, sanitize inputs, etc.)
-    // ... Your validation and sanitization logic here ...
-  
-    // Perform actions with the retrieved data (e.g., save to database, send emails, etc.)
-    // ... Your business logic here ...
-  
-    // Send response back to client
-    res.status(200).json({ message: 'User data received and processed successfully' });
+    console.log('my body', req.body)
+    const {ingredient}= req.body.name;
+    console.log(ingredient)
+
+    axios.get(`https://api.spoonacular.com/recipes/findByIngredients?apiKey=${process.env.REACT_APP_API_KEY_Spoon}&ingredients=${ingredient}&number=2`)
+    .then(response => {
+      console.log('show me', response.data)
+      res.status(200).json({ message: 'User data received and processed successfully' });
+    })
+    .catch(error => {
+      console.error('Error making GET request:', error.message);
+      // Handle error, send appropriate response to client, etc.
+      res.status(500).json({ error: 'Failed to process data' });
+    });
+
+
   });
+
 
 
 app.listen(port, () => {

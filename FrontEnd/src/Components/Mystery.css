@@ -5,3 +5,7 @@
 .Random{
   display:flex;
 }
+.m-image{
+  width: 300px;
+  height:200px;
+}
