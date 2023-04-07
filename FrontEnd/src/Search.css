@@ -1,0 +1,13 @@
+.ingredients{
+  width: 400px;
+  
+}
+.returned-recipe{
+  display:flex;
+}
+
+
+.r-image{
+  width: 300px;
+  height:200px;
+}

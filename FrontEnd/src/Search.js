@@ -7,7 +7,7 @@ function Search(){
 
   
   const [ingredient, setIngredient] = useState('');
-
+  const [returnRecipe, setReturnRecipe] = useState([]);
   const handleInputChange = (event) => {
     const { value } = event.target;
     setIngredient(value);
@@ -18,9 +18,10 @@ function Search(){
 
     try {
       const response = await axios.post('/search', {'name': ingredient});
-      console.log('Response:', response.data);
+      console.log('Response:', response.data.recipes);
       // Handle response, update UI, etc.
-      
+      setReturnRecipe(response.data.recipes);
+
     } catch (error) {
       console.error('Error:', error.message);
       // Handle error, show error message, etc.
@@ -46,6 +47,28 @@ function Search(){
         <br />
         <button type="submit">Submit</button>
       </form>
+      <div className="returned-recipe">
+        
+        {returnRecipe.map((rec)=>{
+          return(
+            <div > 
+          <h3>{rec.title}</h3>
+          <img src={rec.image} className="r-image" alt="food image"></img>
+          
+          
+          
+          </div>
+          )
+
+        }
+          
+          
+
+        
+        )}
+
+      </div>
+      
 
 
     </div>

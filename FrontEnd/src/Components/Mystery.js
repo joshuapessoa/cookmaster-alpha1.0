@@ -29,10 +29,10 @@ function Mystery(){
           {console.log(rec.instructions[0].text)}
           <h3>{rec.title}</h3>
           <img src={rec.image} className="m-image" alt="food image"></img>
-          {rec.ingredients.map((r) => 
-
-            <p>{r}</p>
+          {rec.ingredients.map((r) => {
+            return <p>{r}</p>
           
+          }
           )}
           {rec.instructions.map((r) =>     
 
