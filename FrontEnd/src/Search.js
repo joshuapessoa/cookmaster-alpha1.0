@@ -20,6 +20,7 @@ function Search(){
       const response = await axios.post('/search', {'name': ingredient});
       console.log('Response:', response.data);
       // Handle response, update UI, etc.
+      
     } catch (error) {
       console.error('Error:', error.message);
       // Handle error, show error message, etc.

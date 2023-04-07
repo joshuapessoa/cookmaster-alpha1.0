@@ -4,9 +4,12 @@ const app = express()
 const axios = require('axios')
 const bodyParser = require('body-parser');
 const port = 8080
-app.use(bodyParser.json());
 
 dotenv.config();
+
+app.use (bodyParser.json())
+
+
 app.get('/', (req, res) => {
   // Send a response to the front-end
   res.send('Hello World!');
@@ -50,18 +53,19 @@ app.get('/firebase', (req, res) => {
 
   app.post('/search', (req, res) => {
     // Retrieve data from request body
-    console.log('my body', req.body)
-    const {ingredient}= req.body.name;
-    console.log(ingredient)
+    //console.log('my body', req.body)
+    const ingredient = req.body.name;
+    //console.log({ingredient})
 
     axios.get(`https://api.spoonacular.com/recipes/findByIngredients?apiKey=${process.env.REACT_APP_API_KEY_Spoon}&ingredients=${ingredient}&number=2`)
     .then(response => {
-      console.log('show me', response.data)
-      res.status(200).json({ message: 'User data received and processed successfully' });
+      console.log('show me', response.data[0].title)
+          
+      res.status(200).json({ message: 'User data received and processed successfully',  recipes: response.data});
     })
     .catch(error => {
       console.error('Error making GET request:', error.message);
-      // Handle error, send appropriate response to client, etc.
+
       res.status(500).json({ error: 'Failed to process data' });
     });
 
