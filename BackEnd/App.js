@@ -2,7 +2,9 @@ const express = require('express')
 const dotenv = require('dotenv')
 const app = express()
 const axios = require('axios')
+const bodyParser = require('body-parser');
 const port = 8080
+app.use(bodyParser.json());
 
 dotenv.config();
 app.get('/', (req, res) => {
