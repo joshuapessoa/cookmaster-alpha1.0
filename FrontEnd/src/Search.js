@@ -15,18 +15,28 @@ function Search(){
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    
+    
     // Perform form submission logic with ingredient
-    console.log('fr',ingredient);
+    
+    setIngredient('Loading...');
+    
   }
-
+  axios.post('/search', ingredient)
+  .then(response => {
+    console.log('Response:', response.data);
+    // Handle response, update UI, etc.
+  })
+  .catch(error => {
+    console.error('Error:', error.message);
+    // Handle error, show error message, etc.
+  });
 
   return(
     <div>
         <header><h1> What ingredient do you want to use </h1> </header>
-
-      <body><h1> 233333 </h1></body>
-      <h1>Ingredient Form</h1>
       <form onSubmit={handleSubmit}>
+      <p>*** separate different ingredients with ",+" ***</p>
         <label htmlFor="ingredient">Ingredient:</label>
         <input
           type="text"

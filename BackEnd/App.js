@@ -46,6 +46,20 @@ app.get('/firebase', (req, res) => {
   });
 
 
+  app.post('/search', (req, res) => {
+    // Retrieve data from request body
+    const keyword = req.ingredient;
+  
+    // Validate and sanitize data (e.g., check for required fields, sanitize inputs, etc.)
+    // ... Your validation and sanitization logic here ...
+  
+    // Perform actions with the retrieved data (e.g., save to database, send emails, etc.)
+    // ... Your business logic here ...
+  
+    // Send response back to client
+    res.status(200).json({ message: 'User data received and processed successfully' });
+  });
+
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
