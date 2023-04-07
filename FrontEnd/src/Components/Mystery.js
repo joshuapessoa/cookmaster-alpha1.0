@@ -1,30 +1,21 @@
 import React, {useState, useEffect} from 'react';
 import './Mystery.css';
+import axios from 'axios';
 
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getFirestore } from "firebase/firestore";
 function Mystery(){
   let [recipe, setRecipe] = useState([])
-  const options = {
-    method: 'GET',
-    headers: {
-      'X-RapidAPI-Key': process.env.REACT_APP_API_KEY_Random,
-      'X-RapidAPI-Host': 'random-recipes.p.rapidapi.com'
-    }
-  };
-  
-
   useEffect(()=> {
-    fetch ('https://random-recipes.p.rapidapi.com/ai-quotes/5', options)
-    .then(response => response.json())
-    .then(data => setRecipe(data))
-    .catch(err => console.error('api error',err))
-
-  },[]) 
-
-  
-
+    // Fetch data from /mystery endpoint in your back-end
+    axios.get('/mystery')
+      .then(response => {
+        
+        setRecipe(response.data.Mystery);
+        console.log(recipe.data);
+      })
+      .catch(error => {
+        console.error('Error fetching Mystery data:', error);
+      });
+  },[])
 
   return (
     <div>
