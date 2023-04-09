@@ -1,9 +1,15 @@
+
+.search{
+  background: rgb(247,238,214);
+}
 .ingredients{
   width: 400px;
   
 }
+
 .returned-recipe{
   display:flex;
+  padding:40px;
 }
 
 

@@ -18,7 +18,7 @@ function Search(){
 
     try {
       const response = await axios.post('/search', {'name': ingredient});
-      console.log('Response:', response.data.recipes);
+      console.log('Response:', response.data);
       // Handle response, update UI, etc.
       setReturnRecipe(response.data.recipes);
 
@@ -30,13 +30,24 @@ function Search(){
     setIngredient('');
   }
 
+  const handleExpand = (id) => {
+    setReturnRecipe(prevRecipes => {
+      return prevRecipes.map(rec => {
+        if (rec.id === id) {
+          return { ...rec, expanded: !rec.expanded };
+        }
+        return rec;
+      });
+    });
+  }
 
   return(
-    <div>
+    <body className="search">
         <header><h1> What ingredient do you want to use </h1> </header>
       <form onSubmit={handleSubmit}>
       <p>*** separate different ingredients with ",+" ***</p>
-        <label htmlFor="ingredient">Ingredient:</label>
+        <label htmlFor="ingredient">Ingredient </label>
+        <br></br>
         <input
           type="text"
           id="ingredient"
@@ -45,7 +56,7 @@ function Search(){
           required
         />
         <br />
-        <button type="submit">Submit</button>
+        <button type="submit" className="recipe-button">Submit</button>
       </form>
       <div className="returned-recipe">
         
@@ -54,7 +65,17 @@ function Search(){
             <div > 
           <h3>{rec.title}</h3>
           <img src={rec.image} className="r-image" alt="food image"></img>
-          
+          <button onClick={() => handleExpand(rec.id)}>
+              {rec.expanded ? 'Click here to collapse' : 'Click here to expand'} ↓
+            </button>
+            {rec.expanded && (
+              <div>
+                <p>Missing Ingredients: {rec.missedIngredients.map(ingredient => ingredient.name).join(', ')}</p>
+                <p>Used Ingredients: {rec.usedIngredients.map(ingredient => ingredient.name).join(', ')}</p>
+                <p>Instructions: {rec.instructions}</p>
+                <a href={`https://www.epicurious.com/search/${encodeURIComponent(rec.title)}`} target="_blank">Link to related recipes</a>
+              </div>
+            )}
           
           
           </div>
@@ -67,11 +88,12 @@ function Search(){
         
         )}
 
+
       </div>
       
 
 
-    </div>
+    </body>
   )
 
 }
