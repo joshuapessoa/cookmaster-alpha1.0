@@ -55,24 +55,24 @@ function Search(){
           onChange={handleInputChange}
           required
         />
-        <br />
+        
         <button type="submit" className="recipe-button">Submit</button>
       </form>
       <div className="returned-recipe">
         
         {returnRecipe.map((rec)=>{
           return(
-            <div > 
+            <div className="card"> 
           <h3>{rec.title}</h3>
-          <img src={rec.image} className="r-image" alt="food image"></img>
-          <button onClick={() => handleExpand(rec.id)}>
+          <img src={rec.image} className="r-image" alt="food image"></img><br></br>
+          <button onClick={() => handleExpand(rec.id)} className="expand-button">
               {rec.expanded ? 'Click here to collapse' : 'Click here to expand'} ↓
             </button>
             {rec.expanded && (
               <div>
                 <p>Missing Ingredients: {rec.missedIngredients.map(ingredient => ingredient.name).join(', ')}</p>
                 <p>Used Ingredients: {rec.usedIngredients.map(ingredient => ingredient.name).join(', ')}</p>
-                <p>Instructions: {rec.instructions}</p>
+                
                 <a href={`https://www.epicurious.com/search/${encodeURIComponent(rec.title)}`} target="_blank">Link to related recipes</a>
               </div>
             )}
