@@ -4,10 +4,11 @@ import axios from 'axios';
 
 
 function Search(){
-
-  
   const [ingredient, setIngredient] = useState('');
   const [returnRecipe, setReturnRecipe] = useState([]);
+  const [videoId, setVideoId] = useState('');
+  const [errormsg, setErrormsg] = useState('');
+  
   const handleInputChange = (event) => {
     const { value } = event.target;
     setIngredient(value);
@@ -21,25 +22,42 @@ function Search(){
       console.log('Response:', response.data);
       // Handle response, update UI, etc.
       setReturnRecipe(response.data.recipes);
-
+      setErrormsg('')
     } catch (error) {
       console.error('Error:', error.message);
+      setErrormsg('check your spelling, please')
       // Handle error, show error message, etc.
     }
 
     setIngredient('');
   }
 
-  const handleExpand = (id) => {
+
+
+  const handleExpand =  ( id) => {
     setReturnRecipe(prevRecipes => {
-      return prevRecipes.map(rec => {
+      return prevRecipes.map( rec => {
         if (rec.id === id) {
-          return { ...rec, expanded: !rec.expanded };
+        // Yt Link 
+
+        console.log('This is my rec :)', rec.title)
+        const r = axios.post('/ytlink', { 'name': rec.title }).then((response) => {
+          console.log('here is your link', response.data.Ytlink.items[0].id.videoId);
+          setVideoId(response.data.Ytlink.items[0].id.videoId);
+          return response.data.Ytlink.items[0].id.videoId
+        });
+        return { ...rec, expanded: !rec.expanded, videoId: r}
+
+          
+        } else{
+          return{ ...rec, expanded:false};
         }
-        return rec;
+        return rec
+        
       });
     });
   }
+
 
   return(
     <body className="search">
@@ -58,6 +76,7 @@ function Search(){
         
         <button type="submit" className="recipe-button">Submit</button>
       </form>
+      <div>{errormsg}</div>
       <div className="returned-recipe">
         
         {returnRecipe.map((rec)=>{
@@ -72,27 +91,21 @@ function Search(){
               <div>
                 <p>Missing Ingredients: {rec.missedIngredients.map(ingredient => ingredient.name).join(', ')}</p>
                 <p>Used Ingredients: {rec.usedIngredients.map(ingredient => ingredient.name).join(', ')}</p>
-                
                 <a href={`https://www.epicurious.com/search/${encodeURIComponent(rec.title)}`} target="_blank">Link to related recipes</a>
+                <br></br><nr></nr>
+                <a href={`https://www.target.com/s?searchTerm=${encodeURIComponent(rec.title)}`} target="_blank">Link to look at {rec.title} on Target  </a>
+                {videoId && (
+                <iframe width='420' height='315' allowfullscreen='0'
+                    src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0`}
+                  />
+                )}
               </div>
-            )}
-          
-          
+            )}         
           </div>
           )
-
-        }
-          
-          
-
-        
+        }    
         )}
-
-
       </div>
-      
-
-
     </body>
   )
 

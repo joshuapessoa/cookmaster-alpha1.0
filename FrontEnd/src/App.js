@@ -6,71 +6,65 @@ import Rec from "./Components/Recommendations.js"
 import Mystery from "./Components/Mystery.js"
 import Ingredients from "./Components/Ingredients.js"
 import Home from "./Components/Home.js"
+import Login from "./Components/Login.js"
 import {
   BrowserRouter,
   Routes,
   Route
 } from "react-router-dom";
 import React, {useState, useEffect} from 'react';
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getFirestore } from "firebase/firestore";
 import axios from 'axios';
 
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
+import { FirebaseAppProvider } from 'reactfire';
 
-function App() {
-// Import the functions you need from the SDKs you need
+function FirebaseAppProviderWrapper({ children }) {
+  const [firebaseConfig, setFirebaseConfig] = useState({});
 
+  useEffect(() => {
+    axios.get('/firebase').then((res) => {
+      setFirebaseConfig({
+        apiKey: res.data.Key,
+        authDomain: res.data.Auth,
+        projectId: res.data.ID,
+        storageBucket: res.data.Bucket,
+        messagingSenderId: res.data.Sender,
+        appId: res.data.App,
+      });
+    });
+  }, []);
 
-// https://firebase.google.com/docs/web/setup#available-libraries
+  if (!firebaseConfig.apiKey) {
+    return <div>Loading Firebase...</div>;
+  }
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const [fireApp, setFireApp] = useState([]);
-const [fireDB, setFireDB] = useState([]);
-
-useEffect(() => {
-  axios.get('/firebase').then((res) => {
-    console.log(res.data);
-    setFireApp(initializeApp({
-      
-  apiKey: res.data.Key,
-  authDomain: res.data.Auth,
-  projectId: res.data.ID,
-  storageBucket: res.data.Bucket,
-  messagingSenderId: res.data.Sender,
-  appId: res.data.App
-}))
-  setFireDB(getFirestore(fireApp))
-})
-},[]);
-
-// Initialize Firebase
-
-
-
-
-
-
+  const firebaseApp = firebase.initializeApp(firebaseConfig);
+  const firestore = firebase.firestore();
 
   return (
-    <div className="App">
-      
-    <BrowserRouter>
-    <Header />
-    <Routes>
-      <Route path="/" element={<Home />}></Route>
-      <Route path ="/Mystery" element={<Mystery />}></Route>
-      <Route path ="/Ingredients" element={<Ingredients />}></Route>
-      <Route path ="/Search" element={<Search />}></Route>
-      <Route path ="/Rec" element={<Rec />}></Route>
-    </Routes>
-    </BrowserRouter>
+    <FirebaseAppProvider firebaseApp={firebaseApp} initFirestore={firestore}>
+      {children}
+    </FirebaseAppProvider>
+  );
+}
 
-    
+function App() {
+  return (
+    <div className="App">
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/Mystery" element={<Mystery />} />
+          <Route path="/Ingredients" element={<FirebaseAppProviderWrapper><Ingredients /></FirebaseAppProviderWrapper>} />
+          <Route path="/Search" element={<Search />} />
+          <Route path="/Rec" element={<Rec />} />
+          <Route path="/Login" element={<Login />} />
+        </Routes>
+      </BrowserRouter>
     </div>
-    
-    
   );
 }
 
