@@ -52,15 +52,16 @@ function FirebaseAppProviderWrapper({ children }) {
 
 function App() {
   return (
+    //<Route path="/Rec" element={<Rec />} /> 
     <div className="App">
       <BrowserRouter>
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/Mystery" element={<Mystery />} />
-          <Route path="/Ingredients" element={<FirebaseAppProviderWrapper><Ingredients /></FirebaseAppProviderWrapper>} />
+         <Route path="/Ingredients" element={<FirebaseAppProviderWrapper><Ingredients /></FirebaseAppProviderWrapper>} />
           <Route path="/Search" element={<Search />} />
-          <Route path="/Rec" element={<Rec />} />
+                
           <Route path="/Login" element={<FirebaseAppProviderWrapper><Login /></FirebaseAppProviderWrapper>} />
         </Routes>
       </BrowserRouter>
