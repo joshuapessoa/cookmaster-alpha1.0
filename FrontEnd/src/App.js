@@ -61,7 +61,7 @@ function App() {
           <Route path="/Ingredients" element={<FirebaseAppProviderWrapper><Ingredients /></FirebaseAppProviderWrapper>} />
           <Route path="/Search" element={<Search />} />
           <Route path="/Rec" element={<Rec />} />
-          <Route path="/Login" element={<Login />} />
+          <Route path="/Login" element={<FirebaseAppProviderWrapper><Login /></FirebaseAppProviderWrapper>} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -13,8 +13,13 @@ function Ingredients() {
         const userDocRef = firebase.firestore().collection('users').doc(user._delegate.email);
         console.log('user id', user._delegate.email )
         userDocRef.onSnapshot((doc) => {
+    
           if (doc.exists) {
-            setIngredients(doc.data().food);
+            setIngredients(doc.data().food ||[]);
+            if (!doc.exists) {
+              // Create the 'food' collection if it doesn't exist
+              userDocRef.set({ food: [] });
+            }
           }
         });
       }
@@ -28,24 +33,28 @@ function Ingredients() {
 
   function handleFormSubmit(event) {
     event.preventDefault();
-
+  
     const user = firebase.auth().currentUser;
     if (!user) {
       console.error('Cannot add ingredient: user is not authenticated');
       return;
     }
-
+  
     const userDocRef = firebase.firestore().collection('users').doc(user._delegate.email);
+  
+    userDocRef.get().then((doc) => {
 
-    userDocRef.update({
-      food: firebase.firestore.FieldValue.arrayUnion(newIngredient)
-    })
-    .then(() => {
-      setNewIngredient('');
-      console.log('this ingredient',newIngredient )
-    })
-    .catch((error) => {
-      console.error('Error adding ingredient: ', error);
+      // Add the new ingredient to the 'food' collection
+      userDocRef.update({
+        food: firebase.firestore.FieldValue.arrayUnion(newIngredient)
+      })
+      .then(() => {
+        setNewIngredient('');
+        console.log('this ingredient',newIngredient )
+      })
+      .catch((error) => {
+        console.error('Error adding ingredient: ', error);
+      });
     });
   }
 
