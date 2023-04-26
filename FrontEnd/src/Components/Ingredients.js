@@ -17,10 +17,10 @@ function Ingredients() {
     
           if (doc.exists) {
             setIngredients(doc.data().food ||[]);
-            if (!doc.exists) {
-              // Create the 'food' collection if it doesn't exist
-              userDocRef.set({ food: [] });
-            }
+
+          }      else      if (!doc.exists) {
+            // Create the 'food' collection if it doesn't exist
+            userDocRef.set({ food: [] });
           }
         });
       }
