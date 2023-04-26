@@ -1,41 +1,5 @@
-/*async function getRecipe(){
-  const options = {
-    method: 'GET',
-    headers: {
-      'X-RapidAPI-Key': '43a538bf98msh845702fed47406cp111041jsn999253279440',
-      'X-RapidAPI-Host': 'random-recipes.p.rapidapi.com'
-    }
-  };
-  
-  const res =  await fetch('https://random-recipes.p.rapidapi.com/ai-quotes/5', options).then(res => res)
-    
-  const result = await res.json();
 
-  return result
-  /*<div className="random-recipe">
-
-  {result.map((res)=>
-    <p>{res.title}</p>  
-  )}
-
-</div>;
-  console.log(result);
-  console.log('hello', result[1].title)
-
-
-} */ 
 export  function Home(){
-    const r1 = <></>;
-    /* getRecipe().then(res=>
-      
-      console.log('hiiiiii', res[0]) 
-      
-      );*/
-
-
-
-    
-
     return(
     <body>
     <h2>Welcome to CookMaster</h2>

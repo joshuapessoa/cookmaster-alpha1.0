@@ -18,7 +18,7 @@ function Mystery(){
   },[])
 
   return (
-    <div>
+    <div class="Mystery">
        <p>Check out the <b>Mystery Recipes</b> that might inspire your meal </p>
     <div class="Random">
      

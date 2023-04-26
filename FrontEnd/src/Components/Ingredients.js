@@ -6,6 +6,7 @@ import 'firebase/compat/firestore';
 function Ingredients() {
   const [ingredients, setIngredients] = useState([]);
   const [newIngredient, setNewIngredient] = useState('');
+  const[login, setLogin] = useState('');
 
   useEffect(() => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
@@ -37,7 +38,10 @@ function Ingredients() {
     const user = firebase.auth().currentUser;
     if (!user) {
       console.error('Cannot add ingredient: user is not authenticated');
+      setLogin('You need to log in first')
       return;
+    }else{
+      setLogin('')
     }
   
     const userDocRef = firebase.firestore().collection('users').doc(user._delegate.email);
@@ -94,6 +98,7 @@ function Ingredients() {
         <button type="submit">Add Ingredient</button>
         <button type="button" onClick={handleClearAll}>Clear All</button>
       </form>
+      <p>{login}</p>
     </div>
   );
 }
